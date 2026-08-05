@@ -7,25 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CreateOrderValidator implements RequestValidator<CreateOrderCommand> {
+public class CreateOrderValidator implements RequestValidator<CreateOrderCommand>
+{
 
     @Override
-    public List<String> validate(CreateOrderCommand request) {
+    public List<String> validate(CreateOrderCommand request)
+    {
         List<String> errors = new ArrayList<>();
 
-        if (isBlank(request.customerId())) {
+        if (isBlank(request.customerId()))
+        {
             errors.add("Customer ID is required.");
         }
-        if (request.customerId() != null && request.customerId().length() > 100) {
+        if (request.customerId() != null && request.customerId().length() > 100)
+        {
             errors.add("Customer ID must not exceed 100 characters.");
         }
-        if (request.items() == null || request.items().isEmpty()) {
+        if (request.items() == null || request.items().isEmpty())
+        {
             errors.add("At least one order item is required.");
         }
 
-        if (request.items() != null) {
+        if (request.items() != null)
+        {
             CreateOrderItemDtoValidator itemValidator = new CreateOrderItemDtoValidator();
-            for (CreateOrderItemDto item : request.items()) {
+            for (CreateOrderItemDto item : request.items())
+            {
                 errors.addAll(itemValidator.validate(item));
             }
         }
@@ -33,7 +40,8 @@ public class CreateOrderValidator implements RequestValidator<CreateOrderCommand
         return errors;
     }
 
-    private static boolean isBlank(String value) {
+    private static boolean isBlank(String value)
+    {
         return value == null || value.isBlank();
     }
 }

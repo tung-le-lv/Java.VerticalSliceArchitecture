@@ -12,17 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 
 @RestController
-public class AddOrderItemEndpoint {
+public class AddOrderItemEndpoint
+{
 
     private final Mediator mediator;
 
-    public AddOrderItemEndpoint(Mediator mediator) {
+    public AddOrderItemEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @PostMapping("/orders/{id}/items")
-    public ResponseEntity<ApiResponse<String>> handle(@PathVariable("id") String id, @RequestBody AddItemRequest request) {
-        AddOrderItemCommand command = new AddOrderItemCommand(id, request.productId(), request.productName(), request.quantity(), request.unitPrice());
+    public ResponseEntity<ApiResponse<String>> handle(@PathVariable("id") String id,
+            @RequestBody AddItemRequest request)
+    {
+        AddOrderItemCommand command = new AddOrderItemCommand(id, request.productId(), request.productName(),
+                request.quantity(), request.unitPrice());
         AddOrderItemResult result = mediator.send(command);
         return ApiResults.toHttpResult(result);
     }

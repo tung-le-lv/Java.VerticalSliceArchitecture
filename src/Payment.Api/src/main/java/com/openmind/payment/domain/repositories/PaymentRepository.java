@@ -4,7 +4,8 @@ import com.openmind.payment.domain.entities.PaymentAggregate;
 
 import java.util.Optional;
 
-public interface PaymentRepository {
+public interface PaymentRepository
+{
     Optional<PaymentAggregate> getById(String paymentId);
 
     Optional<PaymentAggregate> getByOrderId(String orderId);

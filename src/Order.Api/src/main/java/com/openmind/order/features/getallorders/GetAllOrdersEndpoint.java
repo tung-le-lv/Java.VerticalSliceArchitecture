@@ -10,16 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class GetAllOrdersEndpoint {
+public class GetAllOrdersEndpoint
+{
 
     private final Mediator mediator;
 
-    public GetAllOrdersEndpoint(Mediator mediator) {
+    public GetAllOrdersEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<ApiResponse<List<OrderDto>>> handle() {
+    public ResponseEntity<ApiResponse<List<OrderDto>>> handle()
+    {
         List<OrderDto> result = mediator.send(new GetAllOrdersQuery());
         return ResponseEntity.ok(ApiResponse.successResponse(result));
     }

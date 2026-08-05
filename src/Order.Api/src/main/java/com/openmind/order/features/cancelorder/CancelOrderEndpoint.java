@@ -9,16 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CancelOrderEndpoint {
+public class CancelOrderEndpoint
+{
 
     private final Mediator mediator;
 
-    public CancelOrderEndpoint(Mediator mediator) {
+    public CancelOrderEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @PostMapping("/orders/{id}/cancel")
-    public ResponseEntity<ApiResponse<String>> handle(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResponse<String>> handle(@PathVariable("id") String id)
+    {
         CancelOrderResult result = mediator.send(new CancelOrderCommand(id));
         return ApiResults.toHttpResult(result);
     }

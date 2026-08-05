@@ -10,21 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 @RestController
-public class CreateOrderEndpoint {
+public class CreateOrderEndpoint
+{
 
     private final Mediator mediator;
 
-    public CreateOrderEndpoint(Mediator mediator) {
+    public CreateOrderEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<ApiResponse<?>> handle(@RequestBody CreateOrderCommand command) {
+    public ResponseEntity<ApiResponse<?>> handle(@RequestBody CreateOrderCommand command)
+    {
         CreateOrderResult result = mediator.send(command);
 
-        if (!result.success()) {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.errorResponse(result.message() != null ? result.message() : "Failed to create order.", result.errors()));
+        if (!result.success())
+        {
+            return ResponseEntity.badRequest().body(ApiResponse.errorResponse(
+                    result.message() != null ? result.message() : "Failed to create order.", result.errors()));
         }
 
         return ResponseEntity.created(URI.create("/orders/" + result.orderId()))

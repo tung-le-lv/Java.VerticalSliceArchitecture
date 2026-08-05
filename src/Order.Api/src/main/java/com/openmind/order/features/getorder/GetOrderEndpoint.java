@@ -9,16 +9,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GetOrderEndpoint {
+public class GetOrderEndpoint
+{
 
     private final Mediator mediator;
 
-    public GetOrderEndpoint(Mediator mediator) {
+    public GetOrderEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @GetMapping("/orders/{id}")
-    public ResponseEntity<ApiResponse<OrderDto>> handle(@PathVariable("id") String id) {
+    public ResponseEntity<ApiResponse<OrderDto>> handle(@PathVariable("id") String id)
+    {
         OrderDto result = mediator.send(new GetOrderQuery(id));
 
         return result == null

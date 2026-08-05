@@ -1,29 +1,35 @@
 package com.openmind.order.domain.events;
 
-public final class OrderCreatedEvent extends DomainEventBase {
+public final class OrderCreatedEvent extends DomainEventBase
+{
     private final String orderId;
     private final String customerId;
 
-    public OrderCreatedEvent(String orderId, String customerId) {
+    public OrderCreatedEvent(String orderId, String customerId)
+    {
         this.orderId = orderId;
         this.customerId = customerId;
     }
 
-    public String getOrderId() {
+    public String getOrderId()
+    {
         return orderId;
     }
 
-    public String getCustomerId() {
+    public String getCustomerId()
+    {
         return customerId;
     }
 
     @Override
-    public String getEventType() {
+    public String getEventType()
+    {
         return "OrderCreated";
     }
 
     @Override
-    public String getMessageGroupId() {
+    public String getMessageGroupId()
+    {
         return orderId;
     }
 }

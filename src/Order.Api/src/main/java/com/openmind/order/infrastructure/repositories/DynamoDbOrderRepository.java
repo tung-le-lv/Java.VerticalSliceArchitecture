@@ -25,98 +25,93 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class DynamoDbOrderRepository implements OrderRepository {
+public class DynamoDbOrderRepository implements OrderRepository
+{
 
     private final DynamoDbClient dynamoDbClient;
     private final OrderDynamoMapper mapper;
     private final String tableName;
 
     public DynamoDbOrderRepository(DynamoDbClient dynamoDbClient, ObjectMapper objectMapper,
-                                    @Value("${ORDERS_TABLE:Orders}") String tableName) {
+            @Value("${ORDERS_TABLE:Orders}") String tableName)
+    {
         this.dynamoDbClient = dynamoDbClient;
         this.mapper = new OrderDynamoMapper(objectMapper);
         this.tableName = tableName;
     }
 
     @Override
-    public Optional<OrderAggregate> getById(String orderId) {
-        GetItemResponse response = dynamoDbClient.getItem(GetItemRequest.builder()
-                .tableName(tableName)
-                .key(Map.of("id", AttributeValue.fromS(orderId)))
-                .build());
+    public Optional<OrderAggregate> getById(String orderId)
+    {
+        GetItemResponse response = dynamoDbClient.getItem(
+                GetItemRequest.builder().tableName(tableName).key(Map.of("id", AttributeValue.fromS(orderId))).build());
 
         return response.hasItem() ? Optional.of(mapper.toOrder(response.item())) : Optional.empty();
     }
 
     @Override
-    public List<OrderAggregate> getByCustomerId(String customerId) {
-        QueryResponse response = dynamoDbClient.query(QueryRequest.builder()
-                .tableName(tableName)
-                .indexName("CustomerIdIndex")
-                .keyConditionExpression("customerId = :customerId")
-                .expressionAttributeValues(Map.of(":customerId", AttributeValue.fromS(customerId)))
-                .build());
+    public List<OrderAggregate> getByCustomerId(String customerId)
+    {
+        QueryResponse response = dynamoDbClient.query(QueryRequest.builder().tableName(tableName)
+                .indexName("CustomerIdIndex").keyConditionExpression("customerId = :customerId")
+                .expressionAttributeValues(Map.of(":customerId", AttributeValue.fromS(customerId))).build());
 
         return response.items().stream().map(mapper::toOrder).toList();
     }
 
     @Override
-    public List<OrderAggregate> getByCustomerIdAndStatus(String customerId, OrderStatus status) {
+    public List<OrderAggregate> getByCustomerIdAndStatus(String customerId, OrderStatus status)
+    {
         Map<String, String> names = Map.of("#status", "status");
         Map<String, AttributeValue> values = new HashMap<>();
         values.put(":customerId", AttributeValue.fromS(customerId));
         values.put(":status", AttributeValue.fromS(status.name()));
 
-        QueryResponse response = dynamoDbClient.query(QueryRequest.builder()
-                .tableName(tableName)
-                .indexName("CustomerIdIndex")
-                .keyConditionExpression("customerId = :customerId")
-                .filterExpression("#status = :status")
-                .expressionAttributeNames(names)
-                .expressionAttributeValues(values)
-                .build());
+        QueryResponse response = dynamoDbClient
+                .query(QueryRequest.builder().tableName(tableName).indexName("CustomerIdIndex")
+                        .keyConditionExpression("customerId = :customerId").filterExpression("#status = :status")
+                        .expressionAttributeNames(names).expressionAttributeValues(values).build());
 
         return response.items().stream().map(mapper::toOrder).toList();
     }
 
     @Override
-    public List<OrderAggregate> getByDate(LocalDate date) {
-        QueryResponse response = dynamoDbClient.query(QueryRequest.builder()
-                .tableName(tableName)
-                .indexName("OrderDateIndex")
-                .keyConditionExpression("orderDate = :date")
-                .expressionAttributeValues(Map.of(":date", AttributeValue.fromS(date.format(DateTimeFormatter.ISO_LOCAL_DATE))))
-                .scanIndexForward(false)
-                .build());
+    public List<OrderAggregate> getByDate(LocalDate date)
+    {
+        QueryResponse response = dynamoDbClient.query(QueryRequest.builder().tableName(tableName)
+                .indexName("OrderDateIndex").keyConditionExpression("orderDate = :date")
+                .expressionAttributeValues(
+                        Map.of(":date", AttributeValue.fromS(date.format(DateTimeFormatter.ISO_LOCAL_DATE))))
+                .scanIndexForward(false).build());
 
         return response.items().stream().map(mapper::toOrder).toList();
     }
 
     @Override
-    public List<OrderAggregate> getAll() {
+    public List<OrderAggregate> getAll()
+    {
         ScanResponse response = dynamoDbClient.scan(ScanRequest.builder().tableName(tableName).build());
         return response.items().stream().map(mapper::toOrder).toList();
     }
 
     @Override
-    public OrderAggregate add(OrderAggregate order) {
-        dynamoDbClient.putItem(PutItemRequest.builder()
-                .tableName(tableName)
-                .item(mapper.toAttributeValues(order))
-                .build());
+    public OrderAggregate add(OrderAggregate order)
+    {
+        dynamoDbClient
+                .putItem(PutItemRequest.builder().tableName(tableName).item(mapper.toAttributeValues(order)).build());
         return order;
     }
 
     @Override
-    public OrderAggregate update(OrderAggregate order) {
+    public OrderAggregate update(OrderAggregate order)
+    {
         return add(order);
     }
 
     @Override
-    public void delete(String orderId) {
-        dynamoDbClient.deleteItem(DeleteItemRequest.builder()
-                .tableName(tableName)
-                .key(Map.of("id", AttributeValue.fromS(orderId)))
-                .build());
+    public void delete(String orderId)
+    {
+        dynamoDbClient.deleteItem(DeleteItemRequest.builder().tableName(tableName)
+                .key(Map.of("id", AttributeValue.fromS(orderId))).build());
     }
 }

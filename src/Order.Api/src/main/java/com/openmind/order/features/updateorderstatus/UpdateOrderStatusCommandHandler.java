@@ -12,21 +12,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UpdateOrderStatusCommandHandler implements RequestHandler<UpdateOrderStatusCommand, UpdateOrderStatusResult> {
+public class UpdateOrderStatusCommandHandler
+        implements
+            RequestHandler<UpdateOrderStatusCommand, UpdateOrderStatusResult>
+{
 
     private final OrderRepository orderRepository;
     private final EventBus eventBus;
 
-    public UpdateOrderStatusCommandHandler(OrderRepository orderRepository, EventBus eventBus) {
+    public UpdateOrderStatusCommandHandler(OrderRepository orderRepository, EventBus eventBus)
+    {
         this.orderRepository = orderRepository;
         this.eventBus = eventBus;
     }
 
     @Override
-    public UpdateOrderStatusResult handle(UpdateOrderStatusCommand request) {
-        try {
+    public UpdateOrderStatusResult handle(UpdateOrderStatusCommand request)
+    {
+        try
+        {
             Optional<OrderAggregate> maybeOrder = orderRepository.getById(request.orderId());
-            if (maybeOrder.isEmpty()) {
+            if (maybeOrder.isEmpty())
+            {
                 return new UpdateOrderStatusResult(false, "Order with ID '" + request.orderId() + "' not found.", null);
             }
 
@@ -34,16 +41,20 @@ public class UpdateOrderStatusCommandHandler implements RequestHandler<UpdateOrd
             order.updateStatus(request.newStatus());
             orderRepository.update(order);
 
-            for (DomainEvent domainEvent : order.getDomainEvents()) {
+            for (DomainEvent domainEvent : order.getDomainEvents())
+            {
                 eventBus.publish(domainEvent);
             }
             order.clearDomainEvents();
 
             return new UpdateOrderStatusResult(true, "Order status updated successfully.", null);
-        } catch (DomainException ex) {
+        } catch (DomainException ex)
+        {
             return new UpdateOrderStatusResult(false, "Status update failed.", List.of(ex.getMessage()));
-        } catch (Exception ex) {
-            return new UpdateOrderStatusResult(false, "An error occurred while updating the order status.", List.of(String.valueOf(ex.getMessage())));
+        } catch (Exception ex)
+        {
+            return new UpdateOrderStatusResult(false, "An error occurred while updating the order status.",
+                    List.of(String.valueOf(ex.getMessage())));
         }
     }
 }

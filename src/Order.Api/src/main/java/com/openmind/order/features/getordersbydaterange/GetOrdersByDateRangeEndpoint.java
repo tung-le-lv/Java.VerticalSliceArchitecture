@@ -12,21 +12,27 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-public class GetOrdersByDateRangeEndpoint {
+public class GetOrdersByDateRangeEndpoint
+{
 
     private final Mediator mediator;
 
-    public GetOrdersByDateRangeEndpoint(Mediator mediator) {
+    public GetOrdersByDateRangeEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @GetMapping("/orders/filter")
-    public ResponseEntity<ApiResponse<List<OrderDto>>> handle(@RequestParam(required = false) String date) {
+    public ResponseEntity<ApiResponse<List<OrderDto>>> handle(@RequestParam(required = false) String date)
+    {
         LocalDate parsedDate;
-        try {
+        try
+        {
             parsedDate = LocalDate.parse(date);
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(ApiResponse.errorResponse("Query parameter 'date' must be a valid date (YYYY-MM-DD)."));
+        } catch (Exception ex)
+        {
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.errorResponse("Query parameter 'date' must be a valid date (YYYY-MM-DD)."));
         }
 
         List<OrderDto> result = mediator.send(new GetOrdersByDateRangeQuery(parsedDate));

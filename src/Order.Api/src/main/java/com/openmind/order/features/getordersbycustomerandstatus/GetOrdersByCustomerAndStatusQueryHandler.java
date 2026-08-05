@@ -9,18 +9,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GetOrdersByCustomerAndStatusQueryHandler implements RequestHandler<GetOrdersByCustomerAndStatusQuery, List<OrderDto>> {
+public class GetOrdersByCustomerAndStatusQueryHandler
+        implements
+            RequestHandler<GetOrdersByCustomerAndStatusQuery, List<OrderDto>>
+{
 
     private final OrderRepository orderRepository;
 
-    public GetOrdersByCustomerAndStatusQueryHandler(OrderRepository orderRepository) {
+    public GetOrdersByCustomerAndStatusQueryHandler(OrderRepository orderRepository)
+    {
         this.orderRepository = orderRepository;
     }
 
     @Override
-    public List<OrderDto> handle(GetOrdersByCustomerAndStatusQuery request) {
+    public List<OrderDto> handle(GetOrdersByCustomerAndStatusQuery request)
+    {
         return orderRepository.getByCustomerIdAndStatus(request.customerId(), request.status()).stream()
-                .map(OrderMapper::toDto)
-                .toList();
+                .map(OrderMapper::toDto).toList();
     }
 }

@@ -9,16 +9,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GetOrdersByDateRangeQueryHandler implements RequestHandler<GetOrdersByDateRangeQuery, List<OrderDto>> {
+public class GetOrdersByDateRangeQueryHandler implements RequestHandler<GetOrdersByDateRangeQuery, List<OrderDto>>
+{
 
     private final OrderRepository orderRepository;
 
-    public GetOrdersByDateRangeQueryHandler(OrderRepository orderRepository) {
+    public GetOrdersByDateRangeQueryHandler(OrderRepository orderRepository)
+    {
         this.orderRepository = orderRepository;
     }
 
     @Override
-    public List<OrderDto> handle(GetOrdersByDateRangeQuery request) {
+    public List<OrderDto> handle(GetOrdersByDateRangeQuery request)
+    {
         return orderRepository.getByDate(request.date()).stream().map(OrderMapper::toDto).toList();
     }
 }

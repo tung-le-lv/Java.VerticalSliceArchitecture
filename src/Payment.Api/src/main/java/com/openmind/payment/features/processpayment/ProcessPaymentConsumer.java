@@ -20,14 +20,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * SQS-driven background consumer — the real "endpoint" of this service. Long-polls
- * PAYMENT_ORDER_QUEUE_URL for OrderPlaced events published by Order.Api and dispatches a
- * ProcessPaymentCommand for each. Unlike HandlePaymentProcessedConsumer in Order.Api, the
- * message is deleted regardless of whether the payment was accepted or declined — only an
+ * SQS-driven background consumer — the real "endpoint" of this service.
+ * Long-polls PAYMENT_ORDER_QUEUE_URL for OrderPlaced events published by
+ * Order.Api and dispatches a ProcessPaymentCommand for each. Unlike
+ * HandlePaymentProcessedConsumer in Order.Api, the message is deleted
+ * regardless of whether the payment was accepted or declined — only an
  * exception during processing leaves it in the queue for SQS to redeliver.
  */
 @Component
-public class ProcessPaymentConsumer {
+public class ProcessPaymentConsumer
+{
     private static final Logger log = LoggerFactory.getLogger(ProcessPaymentConsumer.class);
 
     private final SqsClient sqsClient;
@@ -39,7 +41,8 @@ public class ProcessPaymentConsumer {
     private ExecutorService executor;
 
     public ProcessPaymentConsumer(SqsClient sqsClient, Mediator mediator, ObjectMapper objectMapper,
-                                   @Value("${PAYMENT_ORDER_QUEUE_URL:}") String queueUrl) {
+            @Value("${PAYMENT_ORDER_QUEUE_URL:}") String queueUrl)
+    {
         this.sqsClient = sqsClient;
         this.mediator = mediator;
         this.objectMapper = objectMapper;
@@ -47,81 +50,95 @@ public class ProcessPaymentConsumer {
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void start() {
-        if (queueUrl == null || queueUrl.isBlank()) {
+    public void start()
+    {
+        if (queueUrl == null || queueUrl.isBlank())
+        {
             log.warn("PAYMENT_ORDER_QUEUE_URL is not configured; ProcessPaymentConsumer will not run.");
             return;
         }
 
         running = true;
-        // Non-daemon: this service has no web server (spring.main.web-application-type=none),
+        // Non-daemon: this service has no web server
+        // (spring.main.web-application-type=none),
         // so this thread is the only thing keeping the JVM alive between poll cycles.
         executor = Executors.newSingleThreadExecutor(r -> new Thread(r, "process-payment-consumer"));
         executor.submit(this::pollLoop);
     }
 
     @PreDestroy
-    public void stop() {
+    public void stop()
+    {
         running = false;
-        if (executor != null) {
+        if (executor != null)
+        {
             executor.shutdownNow();
         }
     }
 
-    private void pollLoop() {
-        while (running) {
+    private void pollLoop()
+    {
+        while (running)
+        {
             ReceiveMessageResponse response;
-            try {
-                response = sqsClient.receiveMessage(ReceiveMessageRequest.builder()
-                        .queueUrl(queueUrl)
-                        .maxNumberOfMessages(10)
-                        .waitTimeSeconds(20)
-                        .build());
-            } catch (Exception e) {
-                if (!running) {
+            try
+            {
+                response = sqsClient.receiveMessage(ReceiveMessageRequest.builder().queueUrl(queueUrl)
+                        .maxNumberOfMessages(10).waitTimeSeconds(20).build());
+            } catch (Exception e)
+            {
+                if (!running)
+                {
                     break;
                 }
                 log.error("Failed to poll SQS queue {}", queueUrl, e);
                 continue;
             }
 
-            for (Message message : response.messages()) {
+            for (Message message : response.messages())
+            {
                 processMessage(message);
             }
         }
     }
 
-    private void processMessage(Message message) {
-        try {
+    private void processMessage(Message message)
+    {
+        try
+        {
             JsonNode notification = objectMapper.readTree(message.body());
             JsonNode envelope = objectMapper.readTree(notification.get("Message").asString());
             String eventType = envelope.get("eventType").asString();
 
-            if (!"OrderPlaced".equals(eventType)) {
+            if (!"OrderPlaced".equals(eventType))
+            {
                 deleteMessage(message);
                 return;
             }
 
             OrderPlacedData data = objectMapper.treeToValue(envelope.get("data"), OrderPlacedData.class);
 
-            log.info("Processing payment for order {}, customer {}, amount {}", data.orderId(), data.customerId(), data.totalAmount());
+            log.info("Processing payment for order {}, customer {}, amount {}", data.orderId(), data.customerId(),
+                    data.totalAmount());
 
-            ProcessPaymentResult result = mediator.send(new ProcessPaymentCommand(data.orderId(), data.customerId(), data.totalAmount()));
+            ProcessPaymentResult result = mediator
+                    .send(new ProcessPaymentCommand(data.orderId(), data.customerId(), data.totalAmount()));
 
-            if (!result.success()) {
+            if (!result.success())
+            {
                 log.warn("Payment failed for order {}: {}", data.orderId(), result.message());
             }
 
             deleteMessage(message);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             log.error("Failed to process SQS message {}", message.messageId(), e);
         }
     }
 
-    private void deleteMessage(Message message) {
-        sqsClient.deleteMessage(DeleteMessageRequest.builder()
-                .queueUrl(queueUrl)
-                .receiptHandle(message.receiptHandle())
-                .build());
+    private void deleteMessage(Message message)
+    {
+        sqsClient.deleteMessage(
+                DeleteMessageRequest.builder().queueUrl(queueUrl).receiptHandle(message.receiptHandle()).build());
     }
 }

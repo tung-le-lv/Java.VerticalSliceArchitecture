@@ -11,17 +11,20 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.List;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler
+{
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ApiResponse<String>> handleValidation(ValidationException ex) {
+    public ResponseEntity<ApiResponse<String>> handleValidation(ValidationException ex)
+    {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.errorResponse("Validation failed.", ex.getErrors()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<String>> handleUnexpected(Exception ex, WebRequest request) {
+    public ResponseEntity<ApiResponse<String>> handleUnexpected(Exception ex, WebRequest request)
+    {
         log.error("Unhandled exception processing {}", request.getDescription(false), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.errorResponse("Internal server error.", List.of(String.valueOf(ex.getMessage()))));

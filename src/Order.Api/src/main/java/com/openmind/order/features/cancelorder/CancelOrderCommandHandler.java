@@ -12,21 +12,26 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CancelOrderCommandHandler implements RequestHandler<CancelOrderCommand, CancelOrderResult> {
+public class CancelOrderCommandHandler implements RequestHandler<CancelOrderCommand, CancelOrderResult>
+{
 
     private final OrderRepository orderRepository;
     private final EventBus eventBus;
 
-    public CancelOrderCommandHandler(OrderRepository orderRepository, EventBus eventBus) {
+    public CancelOrderCommandHandler(OrderRepository orderRepository, EventBus eventBus)
+    {
         this.orderRepository = orderRepository;
         this.eventBus = eventBus;
     }
 
     @Override
-    public CancelOrderResult handle(CancelOrderCommand request) {
-        try {
+    public CancelOrderResult handle(CancelOrderCommand request)
+    {
+        try
+        {
             Optional<OrderAggregate> maybeOrder = orderRepository.getById(request.orderId());
-            if (maybeOrder.isEmpty()) {
+            if (maybeOrder.isEmpty())
+            {
                 return new CancelOrderResult(false, "Order with ID '" + request.orderId() + "' not found.", null);
             }
 
@@ -34,16 +39,20 @@ public class CancelOrderCommandHandler implements RequestHandler<CancelOrderComm
             order.cancel();
             orderRepository.update(order);
 
-            for (DomainEvent domainEvent : order.getDomainEvents()) {
+            for (DomainEvent domainEvent : order.getDomainEvents())
+            {
                 eventBus.publish(domainEvent);
             }
             order.clearDomainEvents();
 
             return new CancelOrderResult(true, "Order cancelled successfully.", null);
-        } catch (DomainException ex) {
+        } catch (DomainException ex)
+        {
             return new CancelOrderResult(false, "Cancellation failed.", List.of(ex.getMessage()));
-        } catch (Exception ex) {
-            return new CancelOrderResult(false, "An error occurred while cancelling the order.", List.of(String.valueOf(ex.getMessage())));
+        } catch (Exception ex)
+        {
+            return new CancelOrderResult(false, "An error occurred while cancelling the order.",
+                    List.of(String.valueOf(ex.getMessage())));
         }
     }
 }

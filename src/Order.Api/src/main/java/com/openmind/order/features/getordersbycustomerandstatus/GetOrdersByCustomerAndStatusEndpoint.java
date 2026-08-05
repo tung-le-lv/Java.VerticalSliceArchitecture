@@ -14,23 +14,29 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-public class GetOrdersByCustomerAndStatusEndpoint {
+public class GetOrdersByCustomerAndStatusEndpoint
+{
 
     private final Mediator mediator;
 
-    public GetOrdersByCustomerAndStatusEndpoint(Mediator mediator) {
+    public GetOrdersByCustomerAndStatusEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @GetMapping("/orders/customer/{customerId}/status/{status}")
-    public ResponseEntity<ApiResponse<List<OrderDto>>> handle(@PathVariable String customerId, @PathVariable String status) {
+    public ResponseEntity<ApiResponse<List<OrderDto>>> handle(@PathVariable String customerId,
+            @PathVariable String status)
+    {
         OrderStatus parsedStatus;
-        try {
+        try
+        {
             parsedStatus = OrderStatus.parseIgnoreCase(status);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex)
+        {
             String validValues = Arrays.stream(OrderStatus.values()).map(Enum::name).collect(Collectors.joining(", "));
-            return ResponseEntity.badRequest().body(ApiResponse.errorResponse(
-                    "Invalid status '" + status + "'. Valid values: " + validValues));
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.errorResponse("Invalid status '" + status + "'. Valid values: " + validValues));
         }
 
         List<OrderDto> result = mediator.send(new GetOrdersByCustomerAndStatusQuery(customerId, parsedStatus));

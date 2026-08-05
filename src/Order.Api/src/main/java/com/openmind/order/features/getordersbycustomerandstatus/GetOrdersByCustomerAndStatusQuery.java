@@ -6,5 +6,6 @@ import com.openmind.order.shared.mediator.Request;
 
 import java.util.List;
 
-public record GetOrdersByCustomerAndStatusQuery(String customerId, OrderStatus status) implements Request<List<OrderDto>> {
+public record GetOrdersByCustomerAndStatusQuery(String customerId,
+        OrderStatus status) implements Request<List<OrderDto>> {
 }

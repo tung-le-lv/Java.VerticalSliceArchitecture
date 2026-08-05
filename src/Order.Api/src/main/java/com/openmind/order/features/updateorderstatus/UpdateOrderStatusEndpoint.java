@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UpdateOrderStatusEndpoint {
+public class UpdateOrderStatusEndpoint
+{
 
     private final Mediator mediator;
 
-    public UpdateOrderStatusEndpoint(Mediator mediator) {
+    public UpdateOrderStatusEndpoint(Mediator mediator)
+    {
         this.mediator = mediator;
     }
 
     @PutMapping("/orders/{id}/status")
-    public ResponseEntity<ApiResponse<String>> handle(@PathVariable("id") String id, @RequestBody UpdateStatusRequest request) {
+    public ResponseEntity<ApiResponse<String>> handle(@PathVariable("id") String id,
+            @RequestBody UpdateStatusRequest request)
+    {
         UpdateOrderStatusResult result = mediator.send(new UpdateOrderStatusCommand(id, request.status()));
         return ApiResults.toHttpResult(result);
     }

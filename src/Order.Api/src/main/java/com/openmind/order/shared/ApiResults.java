@@ -3,16 +3,21 @@ package com.openmind.order.shared;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public final class ApiResults {
-    private ApiResults() {
+public final class ApiResults
+{
+    private ApiResults()
+    {
     }
 
-    public static ResponseEntity<ApiResponse<String>> toHttpResult(OperationResult result) {
+    public static ResponseEntity<ApiResponse<String>> toHttpResult(OperationResult result)
+    {
         return toHttpResult(result, "OK");
     }
 
-    public static ResponseEntity<ApiResponse<String>> toHttpResult(OperationResult result, String successMessage) {
-        if (result.success()) {
+    public static ResponseEntity<ApiResponse<String>> toHttpResult(OperationResult result, String successMessage)
+    {
+        if (result.success())
+        {
             return ResponseEntity.ok(ApiResponse.successResponse(successMessage, result.message()));
         }
 
@@ -20,7 +25,7 @@ public final class ApiResults {
                 ? HttpStatus.NOT_FOUND
                 : HttpStatus.BAD_REQUEST;
 
-        return ResponseEntity.status(statusCode)
-                .body(ApiResponse.errorResponse(result.message() != null ? result.message() : "Request failed.", result.errors()));
+        return ResponseEntity.status(statusCode).body(ApiResponse
+                .errorResponse(result.message() != null ? result.message() : "Request failed.", result.errors()));
     }
 }
