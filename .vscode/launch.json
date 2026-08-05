@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Order.Api (local)",
+            "request": "launch",
+            "mainClass": "com.openmind.order.OrderApiApplication",
+            "projectName": "order-api",
+            "vmArgs": "-Dspring.profiles.active=local"
+        },
+        {
+            "type": "java",
+            "name": "Payment.Api (local)",
+            "request": "launch",
+            "mainClass": "com.openmind.payment.PaymentApiApplication",
+            "projectName": "payment-api",
+            "vmArgs": "-Dspring.profiles.active=local"
+        }
+    ]
+}

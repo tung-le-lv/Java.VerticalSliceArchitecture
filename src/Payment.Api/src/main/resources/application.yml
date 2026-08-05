@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: payment-api
+  main:
+    web-application-type: none
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} [%-3level] %msg %n%wEx"
+  level:
+    root: INFO
+    org.springframework: WARN
+    software.amazon.awssdk: WARN
