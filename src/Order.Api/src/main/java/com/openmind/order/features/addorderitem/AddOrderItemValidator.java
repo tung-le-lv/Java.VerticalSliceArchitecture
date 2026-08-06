@@ -11,9 +11,9 @@ import com.openmind.order.shared.mediator.RequestValidator;
 /**
  * Field-level rules (blank checks, max lengths, positivity) live as Jakarta
  * Bean Validation annotations on {@link AddOrderItemCommand} and run
- * automatically via the mediator. This validator only covers the one rule
- * that spans multiple fields and can't be expressed as a single-field
- * constraint annotation.
+ * automatically via the mediator. This validator only covers the one rule that
+ * spans multiple fields and can't be expressed as a single-field constraint
+ * annotation.
  */
 @Component
 public class AddOrderItemValidator implements RequestValidator<AddOrderItemCommand>
@@ -29,7 +29,7 @@ public class AddOrderItemValidator implements RequestValidator<AddOrderItemComma
         if (request.quantity() > 0)
         {
             BigDecimal lineTotal = request.unitPrice().multiply(BigDecimal.valueOf(request.quantity()));
-            
+
             if (lineTotal.compareTo(MAX_LINE_TOTAL) > 0)
             {
                 errors.add("Line total (quantity x unit price) must not exceed " + MAX_LINE_TOTAL + ".");

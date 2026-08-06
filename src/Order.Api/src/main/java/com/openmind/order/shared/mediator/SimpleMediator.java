@@ -18,9 +18,9 @@ import java.util.Map;
  * matching a request's runtime type (via generic-type inspection, done once at
  * startup), runs Jakarta Bean Validation against the request's own constraint
  * annotations plus any matching {@link RequestValidator} beans (for rules that
- * can't be expressed as annotations, e.g. cross-field checks), aggregates
- * their errors into a single {@link ValidationException} before dispatching --
- * the same shape as the original ValidationBehavior pipeline.
+ * can't be expressed as annotations, e.g. cross-field checks), aggregates their
+ * errors into a single {@link ValidationException} before dispatching -- the
+ * same shape as the original ValidationBehavior pipeline.
  */
 @Component
 public class SimpleMediator implements Mediator

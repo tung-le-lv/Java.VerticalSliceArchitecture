@@ -13,9 +13,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * Equivalent of a custom ASP.NET Core logging middleware (app.Use(...)):
- * runs once per request, outside the Spring MVC dispatcher, so it logs every
- * request -- including ones that never match a controller (404s).
+ * Equivalent of a custom ASP.NET Core logging middleware (app.Use(...)): runs
+ * once per request, outside the Spring MVC dispatcher, so it logs every request
+ * -- including ones that never match a controller (404s).
  */
 @Component
 public class RequestLoggingFilter extends OncePerRequestFilter

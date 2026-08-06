@@ -72,7 +72,7 @@ public class OrderAggregate
         }
 
         status = OrderStatus.Confirmed;
-        
+
         updateTimestamp();
         addDomainEvent(new OrderPlacedEvent(id, customerId, totalAmount.getAmount()));
     }

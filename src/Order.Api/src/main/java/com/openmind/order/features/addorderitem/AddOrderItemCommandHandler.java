@@ -47,11 +47,11 @@ public class AddOrderItemCommandHandler implements RequestHandler<AddOrderItemCo
             order.clearDomainEvents();
 
             return new AddOrderItemResult(true, "Item added to order successfully.", null);
-        } 
+        }
         catch (DomainException ex)
         {
             return new AddOrderItemResult(false, "Failed to add item.", List.of(ex.getMessage()));
-        } 
+        }
         catch (Exception ex)
         {
             return new AddOrderItemResult(false, "An error occurred while adding the item.",

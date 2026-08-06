@@ -14,7 +14,8 @@ import com.openmind.order.shared.mediator.RequestHandler;
 
 @Service
 public class UpdateOrderStatusCommandHandler
-        implements RequestHandler<UpdateOrderStatusCommand, UpdateOrderStatusResult>
+        implements
+            RequestHandler<UpdateOrderStatusCommand, UpdateOrderStatusResult>
 {
 
     private final OrderRepository orderRepository;
