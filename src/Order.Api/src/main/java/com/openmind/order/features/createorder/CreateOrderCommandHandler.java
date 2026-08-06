@@ -44,10 +44,12 @@ public class CreateOrderCommandHandler implements RequestHandler<CreateOrderComm
             order.clearDomainEvents();
 
             return new CreateOrderResult(true, order.getId(), "Order created successfully.", null);
-        } catch (DomainException ex)
+        }
+        catch (DomainException ex)
         {
             return new CreateOrderResult(false, null, "Domain validation failed.", List.of(ex.getMessage()));
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return new CreateOrderResult(false, null, "An error occurred while creating the order.",
                     List.of(String.valueOf(ex.getMessage())));

@@ -38,7 +38,8 @@ public class ProcessPaymentCommandHandler implements RequestHandler<ProcessPayme
             if (success)
             {
                 payment.markAsProcessed();
-            } else
+            }
+            else
             {
                 payment.markAsFailed("Payment gateway declined the transaction.");
             }
@@ -53,7 +54,8 @@ public class ProcessPaymentCommandHandler implements RequestHandler<ProcessPayme
 
             return new ProcessPaymentResult(success, payment.getId(),
                     success ? "Payment processed successfully." : "Payment declined.");
-        } catch (DomainException ex)
+        }
+        catch (DomainException ex)
         {
             return new ProcessPaymentResult(false, null, ex.getMessage());
         }

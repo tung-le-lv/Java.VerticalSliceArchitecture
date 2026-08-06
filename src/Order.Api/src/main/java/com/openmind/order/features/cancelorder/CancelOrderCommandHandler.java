@@ -46,10 +46,12 @@ public class CancelOrderCommandHandler implements RequestHandler<CancelOrderComm
             order.clearDomainEvents();
 
             return new CancelOrderResult(true, "Order cancelled successfully.", null);
-        } catch (DomainException ex)
+        }
+        catch (DomainException ex)
         {
             return new CancelOrderResult(false, "Cancellation failed.", List.of(ex.getMessage()));
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return new CancelOrderResult(false, "An error occurred while cancelling the order.",
                     List.of(String.valueOf(ex.getMessage())));

@@ -15,5 +15,8 @@
         <setting id="org.eclipse.jdt.core.formatter.brace_position_for_switch" value="next_line"/>
         <setting id="org.eclipse.jdt.core.formatter.brace_position_for_array_initializer" value="next_line"/>
         <setting id="org.eclipse.jdt.core.formatter.brace_position_for_lambda_body" value="end_of_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_catch_in_try_statement" value="insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_else_in_if_statement" value="insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_finally_in_try_statement" value="insert"/>
     </profile>
 </profiles>

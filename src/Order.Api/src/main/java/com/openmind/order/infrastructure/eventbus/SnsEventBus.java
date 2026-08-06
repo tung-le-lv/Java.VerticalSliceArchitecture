@@ -52,7 +52,8 @@ public class SnsEventBus implements EventBus
                                     .messageAttributes(Map.of("EventType", MessageAttributeValue.builder()
                                             .dataType("String").stringValue(domainEvent.getEventType()).build()))
                                     .build());
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             throw new IllegalStateException("Failed to publish domain event " + domainEvent.getEventType(), e);
         }

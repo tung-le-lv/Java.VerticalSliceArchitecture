@@ -29,7 +29,8 @@ public class GetOrdersByDateRangeEndpoint
         try
         {
             parsedDate = LocalDate.parse(date);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return ResponseEntity.badRequest()
                     .body(ApiResponse.errorResponse("Query parameter 'date' must be a valid date (YYYY-MM-DD)."));

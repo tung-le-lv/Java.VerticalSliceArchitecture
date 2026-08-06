@@ -41,7 +41,8 @@ final class OrderDynamoMapper
             return OrderAggregate.reconstitute(item.get("id").s(), item.get("customerId").s(), orderItems,
                     new BigDecimal(item.get("totalAmount").n()), OrderStatus.valueOf(item.get("status").s()),
                     Instant.parse(item.get("createdAt").s()), Instant.parse(item.get("updatedAt").s()));
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             throw new IllegalStateException("Failed to map DynamoDB item to OrderAggregate", e);
         }
@@ -67,7 +68,8 @@ final class OrderDynamoMapper
             item.put("updatedAt", AttributeValue.fromS(order.getUpdatedAt().toString()));
             item.put("items", AttributeValue.fromS(objectMapper.writeValueAsString(itemsData)));
             return item;
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             throw new IllegalStateException("Failed to map OrderAggregate to DynamoDB item", e);
         }

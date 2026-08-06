@@ -22,7 +22,8 @@ public class DeleteOrderCommandHandler implements RequestHandler<DeleteOrderComm
         {
             orderRepository.delete(request.orderId());
             return new DeleteOrderResult(true, "Order deleted successfully.");
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return new DeleteOrderResult(false, "An error occurred while deleting the order: " + ex.getMessage());
         }

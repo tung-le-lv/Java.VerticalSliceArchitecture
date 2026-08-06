@@ -95,7 +95,8 @@ public class OrderAggregate
         if (index >= 0)
         {
             items.set(index, items.get(index).increaseQuantity(quantity));
-        } else
+        }
+        else
         {
             items.add(OrderItem.create(productId, productName, quantity, unitPrice));
         }

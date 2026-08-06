@@ -47,10 +47,12 @@ public class PlaceOrderCommandHandler implements RequestHandler<PlaceOrderComman
             order.clearDomainEvents();
 
             return new PlaceOrderResult(true, "Order placed successfully.", null);
-        } catch (DomainException ex)
+        }
+        catch (DomainException ex)
         {
             return new PlaceOrderResult(false, ex.getMessage(), null);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return new PlaceOrderResult(false, "An error occurred while placing the order.",
                     List.of(String.valueOf(ex.getMessage())));

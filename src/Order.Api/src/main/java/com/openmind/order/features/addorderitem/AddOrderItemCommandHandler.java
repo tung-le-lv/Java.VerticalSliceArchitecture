@@ -1,15 +1,16 @@
 package com.openmind.order.features.addorderitem;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.openmind.order.domain.DomainException;
 import com.openmind.order.domain.entities.OrderAggregate;
 import com.openmind.order.domain.events.DomainEvent;
 import com.openmind.order.domain.repositories.OrderRepository;
 import com.openmind.order.shared.application.interfaces.EventBus;
 import com.openmind.order.shared.mediator.RequestHandler;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AddOrderItemCommandHandler implements RequestHandler<AddOrderItemCommand, AddOrderItemResult>
@@ -46,10 +47,12 @@ public class AddOrderItemCommandHandler implements RequestHandler<AddOrderItemCo
             order.clearDomainEvents();
 
             return new AddOrderItemResult(true, "Item added to order successfully.", null);
-        } catch (DomainException ex)
+        } 
+        catch (DomainException ex)
         {
             return new AddOrderItemResult(false, "Failed to add item.", List.of(ex.getMessage()));
-        } catch (Exception ex)
+        } 
+        catch (Exception ex)
         {
             return new AddOrderItemResult(false, "An error occurred while adding the item.",
                     List.of(String.valueOf(ex.getMessage())));

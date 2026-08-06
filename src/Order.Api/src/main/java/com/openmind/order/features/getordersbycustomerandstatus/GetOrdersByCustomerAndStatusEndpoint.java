@@ -32,7 +32,8 @@ public class GetOrdersByCustomerAndStatusEndpoint
         try
         {
             parsedStatus = OrderStatus.parseIgnoreCase(status);
-        } catch (IllegalArgumentException ex)
+        }
+        catch (IllegalArgumentException ex)
         {
             String validValues = Arrays.stream(OrderStatus.values()).map(Enum::name).collect(Collectors.joining(", "));
             return ResponseEntity.badRequest()

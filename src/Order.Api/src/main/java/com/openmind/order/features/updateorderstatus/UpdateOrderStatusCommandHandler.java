@@ -48,10 +48,12 @@ public class UpdateOrderStatusCommandHandler
             order.clearDomainEvents();
 
             return new UpdateOrderStatusResult(true, "Order status updated successfully.", null);
-        } catch (DomainException ex)
+        }
+        catch (DomainException ex)
         {
             return new UpdateOrderStatusResult(false, "Status update failed.", List.of(ex.getMessage()));
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             return new UpdateOrderStatusResult(false, "An error occurred while updating the order status.",
                     List.of(String.valueOf(ex.getMessage())));

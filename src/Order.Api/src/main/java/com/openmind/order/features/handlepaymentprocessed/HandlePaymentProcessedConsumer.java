@@ -84,7 +84,8 @@ public class HandlePaymentProcessedConsumer
             {
                 response = sqsClient.receiveMessage(ReceiveMessageRequest.builder().queueUrl(queueUrl)
                         .maxNumberOfMessages(10).waitTimeSeconds(20).build());
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 if (!running)
                 {
@@ -130,7 +131,8 @@ public class HandlePaymentProcessedConsumer
             }
 
             deleteMessage(message);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             log.error("Failed to process SQS message {}", message.messageId(), e);
         }
