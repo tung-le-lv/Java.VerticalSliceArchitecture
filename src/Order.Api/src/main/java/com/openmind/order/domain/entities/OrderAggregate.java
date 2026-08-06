@@ -1,5 +1,12 @@
 package com.openmind.order.domain.entities;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import com.openmind.order.domain.DomainException;
 import com.openmind.order.domain.enums.OrderStatus;
 import com.openmind.order.domain.events.DomainEvent;
@@ -10,13 +17,6 @@ import com.openmind.order.domain.events.OrderPlacedEvent;
 import com.openmind.order.domain.events.OrderStatusChangedEvent;
 import com.openmind.order.domain.valueobjects.Money;
 import com.openmind.order.domain.valueobjects.OrderItem;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 public class OrderAggregate
 {
@@ -70,7 +70,9 @@ public class OrderAggregate
         {
             throw new DomainException("Cannot place an empty order.");
         }
+
         status = OrderStatus.Confirmed;
+        
         updateTimestamp();
         addDomainEvent(new OrderPlacedEvent(id, customerId, totalAmount.getAmount()));
     }

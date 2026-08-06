@@ -19,7 +19,7 @@ import com.openmind.order.shared.mediator.RequestValidator;
 public class AddOrderItemValidator implements RequestValidator<AddOrderItemCommand>
 {
 
-    private static final BigDecimal MAX_LINE_TOTAL = new BigDecimal("100000.00");
+    private static final BigDecimal MAX_LINE_TOTAL = new BigDecimal("10000.00");
 
     @Override
     public List<String> validate(AddOrderItemCommand request)
