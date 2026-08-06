@@ -1,6 +1,10 @@
 package com.openmind.order.shared.mediator;
 
 import com.openmind.order.shared.ValidationException;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+
 import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +16,11 @@ import java.util.Map;
 /**
  * Minimal stand-in for MediatR: resolves the one {@link RequestHandler} bean
  * matching a request's runtime type (via generic-type inspection, done once at
- * startup), runs any matching {@link RequestValidator} beans first and
- * aggregates their errors into a single {@link ValidationException} before
- * dispatching — the same shape as the original ValidationBehavior pipeline.
+ * startup), runs Jakarta Bean Validation against the request's own constraint
+ * annotations plus any matching {@link RequestValidator} beans (for rules that
+ * can't be expressed as annotations, e.g. cross-field checks), aggregates
+ * their errors into a single {@link ValidationException} before dispatching --
+ * the same shape as the original ValidationBehavior pipeline.
  */
 @Component
 public class SimpleMediator implements Mediator
@@ -22,10 +28,14 @@ public class SimpleMediator implements Mediator
 
     private final Map<Class<?>, RequestHandler<Request<Object>, Object>> handlers = new HashMap<>();
     private final Map<Class<?>, List<RequestValidator<Object>>> validators = new HashMap<>();
+    private final Validator beanValidator;
 
     @SuppressWarnings("unchecked")
-    public SimpleMediator(List<RequestHandler<?, ?>> handlerBeans, List<RequestValidator<?>> validatorBeans)
+    public SimpleMediator(List<RequestHandler<?, ?>> handlerBeans, List<RequestValidator<?>> validatorBeans,
+            Validator beanValidator)
     {
+        this.beanValidator = beanValidator;
+
         for (RequestHandler<?, ?> handler : handlerBeans)
         {
             Class<?> requestType = ResolvableType.forClass(RequestHandler.class, handler.getClass()).getGeneric(0)
@@ -53,18 +63,25 @@ public class SimpleMediator implements Mediator
     @SuppressWarnings("unchecked")
     public <TResponse> TResponse send(Request<TResponse> request)
     {
-        List<RequestValidator<Object>> matchingValidators = validators.get(request.getClass());
-        if (matchingValidators != null && !matchingValidators.isEmpty())
+        List<String> errors = new ArrayList<>();
+
+        for (ConstraintViolation<Request<TResponse>> violation : beanValidator.validate(request))
         {
-            List<String> errors = new ArrayList<>();
+            errors.add(violation.getMessage());
+        }
+
+        List<RequestValidator<Object>> matchingValidators = validators.get(request.getClass());
+        if (matchingValidators != null)
+        {
             for (RequestValidator<Object> validator : matchingValidators)
             {
                 errors.addAll(validator.validate(request));
             }
-            if (!errors.isEmpty())
-            {
-                throw new ValidationException(errors);
-            }
+        }
+
+        if (!errors.isEmpty())
+        {
+            throw new ValidationException(errors);
         }
 
         RequestHandler<Request<Object>, Object> handler = handlers.get(request.getClass());

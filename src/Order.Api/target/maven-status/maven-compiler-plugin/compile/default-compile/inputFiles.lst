@@ -25,7 +25,6 @@ C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\createorder\CreateOrderCommandHandler.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\createorder\CreateOrderEndpoint.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\createorder\CreateOrderItemDto.java
-C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\createorder\CreateOrderItemDtoValidator.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\createorder\CreateOrderResult.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\createorder\CreateOrderValidator.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\features\deleteorder\DeleteOrderCommand.java
@@ -68,6 +67,7 @@ C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\application\dto\OrderMapper.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\application\interfaces\EventBus.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\GlobalExceptionHandler.java
+C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\mediator\BeanValidationRequestValidator.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\mediator\Mediator.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\mediator\Request.java
 C:\Users\tung.le\Data\git-personal\JAVA\Java.VerticalSliceArchitecture\src\Order.Api\src\main\java\com\openmind\order\shared\mediator\RequestHandler.java

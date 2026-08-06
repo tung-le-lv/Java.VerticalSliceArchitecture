@@ -1,14 +1,15 @@
 package com.openmind.order.features.updateorderstatus;
 
-import com.openmind.order.domain.enums.OrderStatus;
-import com.openmind.order.shared.ApiResponse;
-import com.openmind.order.shared.ApiResults;
-import com.openmind.order.shared.mediator.Mediator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.openmind.order.domain.enums.OrderStatus;
+import com.openmind.order.shared.ApiResponse;
+import com.openmind.order.shared.ApiResults;
+import com.openmind.order.shared.mediator.Mediator;
 
 @RestController
 public class UpdateOrderStatusEndpoint

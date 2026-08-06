@@ -1,20 +1,20 @@
 package com.openmind.order.features.updateorderstatus;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.openmind.order.domain.DomainException;
 import com.openmind.order.domain.entities.OrderAggregate;
 import com.openmind.order.domain.events.DomainEvent;
 import com.openmind.order.domain.repositories.OrderRepository;
 import com.openmind.order.shared.application.interfaces.EventBus;
 import com.openmind.order.shared.mediator.RequestHandler;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UpdateOrderStatusCommandHandler
-        implements
-            RequestHandler<UpdateOrderStatusCommand, UpdateOrderStatusResult>
+        implements RequestHandler<UpdateOrderStatusCommand, UpdateOrderStatusResult>
 {
 
     private final OrderRepository orderRepository;

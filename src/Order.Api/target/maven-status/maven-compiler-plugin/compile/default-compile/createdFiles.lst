@@ -34,7 +34,6 @@ com\openmind\order\features\updateorderstatus\UpdateOrderStatusCommand.class
 com\openmind\order\shared\mediator\Request.class
 com\openmind\order\domain\events\DomainEventBase.class
 com\openmind\order\features\getallorders\GetAllOrdersEndpoint.class
-com\openmind\order\features\createorder\CreateOrderItemDtoValidator.class
 com\openmind\order\features\deleteorder\DeleteOrderResult.class
 com\openmind\order\config\AwsClientConfig.class
 com\openmind\order\infrastructure\repositories\OrderItemData.class

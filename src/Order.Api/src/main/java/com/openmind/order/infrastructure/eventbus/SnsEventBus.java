@@ -1,16 +1,18 @@
 package com.openmind.order.infrastructure.eventbus;
 
-import tools.jackson.databind.ObjectMapper;
-import com.openmind.order.domain.events.DomainEvent;
-import com.openmind.order.shared.application.interfaces.EventBus;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.openmind.order.domain.events.DomainEvent;
+import com.openmind.order.shared.application.interfaces.EventBus;
+
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.MessageAttributeValue;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
+import tools.jackson.databind.ObjectMapper;
 
 @Component
 public class SnsEventBus implements EventBus

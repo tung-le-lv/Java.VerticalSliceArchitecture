@@ -1,16 +1,17 @@
 package com.openmind.order.config;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
-
-import java.net.URI;
 
 /**
  * Replaces ServiceCollectionExtensions.AddCoreServices/AddEventBus. All three
@@ -30,7 +31,6 @@ import java.net.URI;
 @Configuration
 public class AwsClientConfig
 {
-
     @Bean
     public DynamoDbClient dynamoDbClient(@Value("${AWS_ENDPOINT_URL:}") String endpointUrl,
             @Value("${AWS_DEFAULT_REGION:ap-southeast-2}") String region,
